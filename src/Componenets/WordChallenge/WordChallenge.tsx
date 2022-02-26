@@ -13,12 +13,13 @@ interface WordChallengeProps {
 }
 
 const WordChallenge = ({selectedWord, words, switchToNextRandomWord}: WordChallengeProps) => {
-  const allowedLetters = 'אבגדהוזחטיכלמנסעפצקרשתץםף'
+  const allowedLetters = 'אבגדהוזחטיכלמנסעפצקרשתץםףן'
   const {width, height} = useWindowSize();
   const [currentChance, setCurrentChance] = useState([]);
   const [chances, setChances] = useState([]);
   const [stopListenToKeyBoard, setStopListenToKeyBoard] = useState(false);
   const won = useMemo(() => chances[chances.length - 1] === selectedWord, [chances, selectedWord]);
+  const lost = useMemo(() => chances.length === 5 && !chances.includes(selectedWord), [selectedWord, chances]);
   const fillEmptyLines = useMemo(() => (currentChance.length !== 0 ? 4 : 5) - chances.length, [chances, currentChance]);
 
   const handleKeyBoard = useCallback(({key}: KeyboardEvent) => {
@@ -36,7 +37,6 @@ const WordChallenge = ({selectedWord, words, switchToNextRandomWord}: WordChalle
       if (currentChance.length === 5) {
         let currentWord = currentChance.join('');
 
-        // todo: check if the word exists in the dictionary of words.
         if (!words.includes(currentWord)) {
           toast.error('המילה לא קיימת במילון');
           return;
@@ -104,6 +104,8 @@ const WordChallenge = ({selectedWord, words, switchToNextRandomWord}: WordChalle
 
       <button onClick={switchToNextRandomWord}>Next word</button>
     </>}
+
+    {lost && <>Loser... the word is {selectedWord}</>}
 
     {chances.map((chance, key) => <Word key={key} selectedWord={selectedWord} currentWord={chance}/>)}
     {currentChance && <Word selectedWord={selectedWord} currentWord={currentChance.join('')} currentChance={true}/>}
