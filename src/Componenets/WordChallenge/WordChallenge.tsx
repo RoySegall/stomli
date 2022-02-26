@@ -8,15 +8,17 @@ import 'react-toastify/dist/ReactToastify.css';
 
 interface WordChallengeProps {
   selectedWord: string
+  words: string[]
+  switchToNextRandomWord: () => void
 }
 
-const WordChallenge = ({selectedWord}: WordChallengeProps) => {
+const WordChallenge = ({selectedWord, words, switchToNextRandomWord}: WordChallengeProps) => {
   const allowedLetters = 'אבגדהוזחטיכלמנסעפצקרשתץםף'
   const {width, height} = useWindowSize();
   const [currentChance, setCurrentChance] = useState([]);
   const [chances, setChances] = useState([]);
   const [stopListenToKeyBoard, setStopListenToKeyBoard] = useState(false);
-  const won = useMemo(() => chances[chances.length - 1] === selectedWord, [chances]);
+  const won = useMemo(() => chances[chances.length - 1] === selectedWord, [chances, selectedWord]);
   const fillEmptyLines = useMemo(() => (currentChance.length !== 0 ? 4 : 5) - chances.length, [chances, currentChance]);
 
   const handleKeyBoard = useCallback(({key}: KeyboardEvent) => {
@@ -26,17 +28,21 @@ const WordChallenge = ({selectedWord}: WordChallengeProps) => {
     }
 
     if (key === 'Enter') {
-
       if (currentChance.length < 5) {
         toast.error('אין מספיק אותיות');
+        return;
       }
 
       if (currentChance.length === 5) {
+        let currentWord = currentChance.join('');
 
         // todo: check if the word exists in the dictionary of words.
+        if (!words.includes(currentWord)) {
+          toast.error('המילה לא קיימת במילון');
+          return;
+        }
 
         // Adding the current attempt, successful or not, to the list of chances.
-        let currentWord = currentChance.join('');
         let tempChances = chances;
         setCurrentChance([]);
 
@@ -59,6 +65,12 @@ const WordChallenge = ({selectedWord}: WordChallengeProps) => {
   }, [currentChance, setCurrentChance, chances]);
 
   useEffect(() => {
+    setCurrentChance([]);
+    setChances([]);
+    setStopListenToKeyBoard(false);
+  }, [selectedWord])
+
+  useEffect(() => {
     addEventListener('keydown', handleKeyBoard);
 
     if (stopListenToKeyBoard) {
@@ -69,7 +81,7 @@ const WordChallenge = ({selectedWord}: WordChallengeProps) => {
     return () => {
       removeEventListener('keydown', handleKeyBoard);
     };
-  }, [currentChance, stopListenToKeyBoard]);
+  }, [currentChance, stopListenToKeyBoard, selectedWord]);
 
   return <div className={styles.app}>
     <ToastContainer
@@ -87,7 +99,11 @@ const WordChallenge = ({selectedWord}: WordChallengeProps) => {
 
     <h1>סתוםלי</h1>
 
-    {won && <Confetti width={width} height={height}/>}
+    {won && <>
+      <Confetti width={width} height={height}/>
+
+      <button onClick={switchToNextRandomWord}>Next word</button>
+    </>}
 
     {chances.map((chance, key) => <Word key={key} selectedWord={selectedWord} currentWord={chance}/>)}
     {currentChance && <Word selectedWord={selectedWord} currentWord={currentChance.join('')} currentChance={true}/>}
