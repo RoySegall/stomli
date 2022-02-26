@@ -1,8 +1,10 @@
 import {Word} from './Componenets/Word/Word';
 import styles from './App.module.scss'
-import useWindowSize from 'react-use/lib/useWindowSize'
+import {useWindowSize} from 'react-use';
 import Confetti from 'react-confetti'
 import {useCallback, useEffect, useMemo, useState} from "react";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const selectedWord = 'שרשרת';
@@ -20,23 +22,34 @@ function App() {
       setCurrentChance([...currentChance.slice(0, -1)]);
     }
 
-    if (key === 'Enter' && currentChance.length === 5) {
-      // Adding the current attempt, successful or not, to the list of chances.
-      let currentWord = currentChance.join('');
-      let tempChances = chances;
-      setCurrentChance([]);
+    if (key === 'Enter') {
 
-      if (currentWord === selectedWord || tempChances.length === 4) {
-        setStopListenToKeyBoard(true);
+      if (currentChance.length < 5) {
+        toast.error('אין מספיק אותיות');
       }
 
+      if (currentChance.length === 5) {
 
-      tempChances.push(currentWord);
-      setChances([...tempChances])
+        // todo: check if the word exists in the dictionary of words.
+
+        // Adding the current attempt, successful or not, to the list of chances.
+        let currentWord = currentChance.join('');
+        let tempChances = chances;
+        setCurrentChance([]);
+
+        if (currentWord === selectedWord || tempChances.length === 4) {
+          setStopListenToKeyBoard(true);
+        }
+
+        // @ts-ignore
+        tempChances.push(currentWord);
+        setChances([...tempChances])
+      }
     }
 
     if (allowedLetters.includes(key) && currentChance.length !== 5) {
       // The current letter is allowed so we can add it to the current chance.
+      // @ts-ignore
       currentChance.push(key);
       setCurrentChance([...currentChance]);
     }
@@ -56,6 +69,19 @@ function App() {
   }, [currentChance, stopListenToKeyBoard]);
 
   return <div className={styles.app}>
+    <ToastContainer
+      position="top-center"
+      autoClose={5000}
+      hideProgressBar
+      newestOnTop={false}
+      closeOnClick
+      rtl={true}
+      pauseOnFocusLoss={false}
+      draggable
+      pauseOnHover
+      theme={'dark'}
+    />
+
     <h1>סתוםלי</h1>
 
     {won && <Confetti width={width} height={height} />}
