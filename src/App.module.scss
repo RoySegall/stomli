@@ -7,9 +7,20 @@
   font-family: "Heebo", sans-serif;
   justify-content: center;
 
+  select, input, textarea {
+    font-size: 16px;
+  }
+
   h1 {
     border-bottom: solid 1px #000000;
     width: 50%;
     text-align: center;
+  }
+
+  .input {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 10px;
   }
 }

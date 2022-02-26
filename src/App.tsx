@@ -30,6 +30,7 @@ function App() {
         setStopListenToKeyBoard(true);
       }
 
+
       tempChances.push(currentWord);
       setChances([...tempChances])
     }
@@ -63,6 +64,9 @@ function App() {
     {currentChance && <Word selectedWord={selectedWord} currentWord={currentChance.join('')} currentChance={true} /> }
     {[...Array.from({length: fillEmptyLines}).keys()]
       .map((iterator, key) => <Word key={key} selectedWord={selectedWord} currentWord={''} optionalChance={true} />)}
+
+
+    { !won && <input type='text' className={styles.input} /> }
   </div>
 
 }

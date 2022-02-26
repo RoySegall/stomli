@@ -9,8 +9,7 @@ interface WordProps {
 
 function getColorClass(selectedWord: string, index: string, letter: string) {
   if (selectedWord.includes(letter)) {
-    // @ts-ignore
-    return selectedWord.at(index) === letter ? 'correct' : 'wrongPlace';
+    return selectedWord.charAt(parseInt(index)) === letter ? 'correct' : 'wrongPlace';
   }
 
   return 'wrong';
