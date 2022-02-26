@@ -1,4 +1,5 @@
-import {useWindowSize} from "react-use";
+import useWindowSize from 'react-use/lib/useWindowSize';
+
 import {useCallback, useEffect, useMemo, useState} from "react";
 import {toast, ToastContainer} from "react-toastify";
 import styles from "../../App.module.scss";
@@ -19,6 +20,7 @@ const WordChallenge = ({selectedWord, words, switchToNextRandomWord}: WordChalle
   const [chances, setChances] = useState([]);
   const [stopListenToKeyBoard, setStopListenToKeyBoard] = useState(false);
   const won = useMemo(() => chances[chances.length - 1] === selectedWord, [chances, selectedWord]);
+  // @ts-ignore
   const lost = useMemo(() => chances.length === 5 && !chances.includes(selectedWord), [selectedWord, chances]);
   const fillEmptyLines = useMemo(() => (currentChance.length !== 0 ? 4 : 5) - chances.length, [chances, currentChance]);
 
