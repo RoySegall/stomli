@@ -1,0 +1,31 @@
+.word {
+  display: flex;
+
+  .letter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 25px;
+    height: 25px;
+    padding: 10px;
+    margin: 10px;
+    font-size: 25px;
+    border: solid 1px #000000;
+    color: black;
+
+    &.correct {
+      background: limegreen;
+      color: white;
+    }
+
+    &.wrong {
+      background: gray;
+      color: white;
+    }
+
+    &.wrongPlace {
+      color: white;
+      background: sandybrown;
+    }
+  }
+}
