@@ -1,11 +1,12 @@
-import useWindowSize from 'react-use/lib/useWindowSize';
 
 import {useCallback, useEffect, useMemo, useState} from "react";
 import {toast, ToastContainer} from "react-toastify";
 import styles from "../../App.module.scss";
 import Confetti from "react-confetti";
-import {Word} from "../Word/Word";
 import 'react-toastify/dist/ReactToastify.css';
+import {Rows} from "../Rows/Rows";
+import {Lost} from "../Lost/Lost";
+import {Won} from "../Won/Won";
 
 interface WordChallengeProps {
   selectedWord: string
@@ -15,14 +16,12 @@ interface WordChallengeProps {
 
 const WordChallenge = ({selectedWord, words, switchToNextRandomWord}: WordChallengeProps) => {
   const allowedLetters = 'אבגדהוזחטיכלמנסעפצקרשתץםףן'
-  const {width, height} = useWindowSize();
   const [currentChance, setCurrentChance] = useState([]);
   const [chances, setChances] = useState([]);
   const [stopListenToKeyBoard, setStopListenToKeyBoard] = useState(false);
   const won = useMemo(() => chances[chances.length - 1] === selectedWord, [chances, selectedWord]);
   // @ts-ignore
   const lost = useMemo(() => chances.length === 5 && !chances.includes(selectedWord), [selectedWord, chances]);
-  const fillEmptyLines = useMemo(() => (currentChance.length !== 0 ? 4 : 5) - chances.length, [chances, currentChance]);
 
   const handleKeyBoard = useCallback(({key}: KeyboardEvent) => {
     if (key === 'Backspace') {
@@ -98,24 +97,12 @@ const WordChallenge = ({selectedWord, words, switchToNextRandomWord}: WordChalle
       pauseOnHover
       theme={'dark'}
     />
+    {won && <Won switchToNextRandomWord={switchToNextRandomWord}  /> }
+    {lost && <Lost selectedWord={selectedWord} /> }
 
-    <h1>סתוםלי</h1>
+    <h1>סתום-לי</h1>
 
-    {won && <>
-      <Confetti width={width} height={height}/>
-
-      <button onClick={switchToNextRandomWord}>Next word</button>
-    </>}
-
-    {lost && <>Loser... the word is {selectedWord}</>}
-
-    {chances.map((chance, key) => <Word key={key} selectedWord={selectedWord} currentWord={chance}/>)}
-    {currentChance && <Word selectedWord={selectedWord} currentWord={currentChance.join('')} currentChance={true}/>}
-    {[...Array.from({length: fillEmptyLines}).keys()]
-      .map((iterator, key) => <Word key={key} selectedWord={selectedWord} currentWord={''} optionalChance={true}/>)}
-
-
-    {!won && <input type='text' className={styles.input}/>}
+    <Rows selectedWord={selectedWord} chances={chances} currentChance={currentChance} />
   </div>
 };
 
