@@ -7,6 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import {Rows} from "../Rows/Rows";
 import {Lost} from "../Lost/Lost";
 import {Won} from "../Won/Won";
+import {Keyboard} from "../Keyboard/Keyboard";
 
 interface WordChallengeProps {
   selectedWord: string
@@ -16,12 +17,15 @@ interface WordChallengeProps {
 
 const WordChallenge = ({selectedWord, words, switchToNextRandomWord}: WordChallengeProps) => {
   const allowedLetters = 'אבגדהוזחטיכלמנסעפצקרשתץםףן'
-  const [currentChance, setCurrentChance] = useState([]);
-  const [chances, setChances] = useState([]);
+  const [currentChance, setCurrentChance] = useState<string[]>([]);
+  const [chances, setChances] = useState<string[]>([]);
   const [stopListenToKeyBoard, setStopListenToKeyBoard] = useState(false);
   const won = useMemo(() => chances[chances.length - 1] === selectedWord, [chances, selectedWord]);
-  // @ts-ignore
   const lost = useMemo(() => chances.length === 5 && !chances.includes(selectedWord), [selectedWord, chances]);
+  const addLetter = useCallback((letter: string) => {
+    currentChance.push(letter);
+    setCurrentChance([...currentChance]);
+  }, [currentChance, setCurrentChance]);
 
   const handleKeyBoard = useCallback(({key}: KeyboardEvent) => {
     if (key === 'Backspace') {
@@ -60,8 +64,7 @@ const WordChallenge = ({selectedWord, words, switchToNextRandomWord}: WordChalle
     if (allowedLetters.includes(key) && currentChance.length !== 5) {
       // The current letter is allowed so we can add it to the current chance.
       // @ts-ignore
-      currentChance.push(key);
-      setCurrentChance([...currentChance]);
+      addLetter(key);
     }
   }, [currentChance, setCurrentChance, chances]);
 
@@ -100,9 +103,12 @@ const WordChallenge = ({selectedWord, words, switchToNextRandomWord}: WordChalle
     {won && <Won switchToNextRandomWord={switchToNextRandomWord}  /> }
     {lost && <Lost selectedWord={selectedWord} /> }
 
-    <h1>סתום-לי</h1>
+    <div className={styles.upper}>
+      <h1>סתום-לי</h1>
+      <Rows selectedWord={selectedWord} chances={chances} currentChance={currentChance} />
+    </div>
 
-    <Rows selectedWord={selectedWord} chances={chances} currentChance={currentChance} />
+    <Keyboard addLetter={addLetter} />
   </div>
 };
 
