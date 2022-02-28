@@ -3,7 +3,8 @@ import styles from './Keyboard.module.scss'
 export interface Letter {
   letter: string,
   className?: string,
-  disabled?: boolean
+  disabled?: boolean,
+  status?: 'correct' | 'misplaced' | 'wrong'
 }
 
 interface KeyBoardLayout {
@@ -15,20 +16,17 @@ interface KeyBoardLayout {
 
 export const keys: KeyBoardLayout = {
   Numbers: [
-    {
-      letter: 'delete',
-      className: styles.deleteButton
-    },
-    {letter: '0'},
-    {letter: '9'},
-    {letter: '8'},
-    {letter: '7'},
-    {letter: '6'},
-    {letter: '5'},
-    {letter: '4'},
-    {letter: '3'},
-    {letter: '2'},
-    {letter: '1'},
+    {letter: 'delete', className: styles.deleteButton},
+    {letter: '0', disabled: true,},
+    {letter: '9', disabled: true,},
+    {letter: '8', disabled: true,},
+    {letter: '7', disabled: true,},
+    {letter: '6', disabled: true,},
+    {letter: '5', disabled: true,},
+    {letter: '4', disabled: true,},
+    {letter: '3', disabled: true,},
+    {letter: '2', disabled: true,},
+    {letter: '1', disabled: true,},
   ],
   Middle: [
     {letter: 'ף'},

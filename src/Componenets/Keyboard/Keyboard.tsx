@@ -12,20 +12,26 @@ interface RowProps {
 }
 
 interface ButtonProps {
-  className?: string | undefined,
-  onClick: () => void,
-  letter: string
+  className?: string | undefined;
+  onClick: () => void;
+  letter: string;
+  disabled?: boolean
 }
 
-function Button({className, onClick, letter}: ButtonProps) {
-  return <button className={`${styles.buttonLetter} ${className}`} onClick={onClick}>
+function Button({className, onClick, letter, disabled}: ButtonProps) {
+  return <button className={`${styles.buttonLetter} ${className}`} onClick={onClick} disabled={Boolean(disabled)}>
     {letter}
   </button>;
 }
 
 const Row = ({row, addLetter, className}: RowProps) => {
-  return <div className={className}>{row.map(({letter, className}, letterKey) =>
-    <Button key={letterKey} className={className} onClick={() => addLetter(letter)} letter={letter}/>
+  return <div className={className}>{row.map(({letter, className, disabled, status}, letterKey) =>
+      <Button
+      disabled={disabled}
+      key={letterKey}
+      className={`${className} ${status && styles[status]}`}
+      onClick={() => addLetter(letter)}
+      letter={letter} />
   )}</div>
 };
 

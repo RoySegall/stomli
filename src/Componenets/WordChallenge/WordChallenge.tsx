@@ -57,6 +57,7 @@ const WordChallenge = ({selectedWord, words, switchToNextRandomWord}: WordChalle
 
   const addLetter = useCallback((letter: string) => {
     letter = letter.toLocaleLowerCase();
+
     if  (letter === 'delete') {
       deleteWord();
       return;
@@ -67,7 +68,7 @@ const WordChallenge = ({selectedWord, words, switchToNextRandomWord}: WordChalle
       return;
     }
 
-    if (currentChance.length < 5) {
+    if (currentChance.length < 5 && allowedLetters.includes(letter)) {
       currentChance.push(letter);
       setCurrentChance([...currentChance]);
     }
