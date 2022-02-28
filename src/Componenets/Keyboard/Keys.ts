@@ -1,8 +1,24 @@
-const keys = [
-  [
-    {letter: '>'},
-    {letter: '='},
-    {letter: '-'},
+import styles from './Keyboard.module.scss'
+
+export interface Letter {
+  letter: string,
+  className?: string,
+  disabled?: boolean
+}
+
+interface KeyBoardLayout {
+  Numbers: Letter[],
+  Upper: Letter[],
+  Middle: Letter[],
+  Bottom: Letter[]
+}
+
+export const keys: KeyBoardLayout = {
+  Numbers: [
+    {
+      letter: 'delete',
+      className: styles.deleteButton
+    },
     {letter: '0'},
     {letter: '9'},
     {letter: '8'},
@@ -14,22 +30,7 @@ const keys = [
     {letter: '2'},
     {letter: '1'},
   ],
-  [
-    {letter: '.'},
-    {letter: ']'},
-    {letter: '['},
-    {letter: 'פ'},
-    {letter: 'ם'},
-    {letter: 'ן'},
-    {letter: 'ו'},
-    {letter: 'ט'},
-    {letter: 'א'},
-    {letter: 'ר'},
-    {letter: 'ק'},
-    {letter: 'ק'},
-  ],
-  [
-    {letter: '.'},
+  Middle: [
     {letter: 'ף'},
     {letter: 'ך'},
     {letter: 'ל'},
@@ -41,7 +42,18 @@ const keys = [
     {letter: 'ד'},
     {letter: 'ש'},
   ],
-  [
+  Upper: [
+    {letter: 'פ'},
+    {letter: 'ם'},
+    {letter: 'ן'},
+    {letter: 'ו'},
+    {letter: 'ט'},
+    {letter: 'א'},
+    {letter: 'ר'},
+    {letter: 'ק'},
+    {letter: 'ק'}
+  ],
+  Bottom: [
     {letter: 'ץ'},
     {letter: 'ת'},
     {letter: 'צ'},
@@ -52,7 +64,4 @@ const keys = [
     {letter: 'ס'},
     {letter: 'ז'},
   ],
-
-];
-
-export {keys}
+};

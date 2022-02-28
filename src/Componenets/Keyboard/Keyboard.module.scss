@@ -1,14 +1,43 @@
 .keyboard {
   padding-bottom: 2vh;
+  font-size: 16px;
 
   .buttonLetter {
-    height: 55px;
-    width: 55px;
+    height: 2em;
+    width: 2em;
     margin: 10px;
     font-size: 24px;
     font-weight: 300;
     font-family: "Heebo", sans-serif;
     border-radius: 5px;
     border: solid 1px black;
+  }
+
+  .deleteButton {
+    width: 1.75em;
+  }
+
+  .enterButton {
+    width: 3em;
+    height: 80%;
+  }
+
+  .secondRow {
+    display: flex;
+
+    .keys {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .upper {
+      display: flex;
+      justify-content: space-around;
+    }
+  }
+
+  .bottomRow {
+    display: flex;
+    justify-content: space-evenly;;
   }
 }
