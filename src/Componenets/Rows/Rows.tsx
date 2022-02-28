@@ -8,7 +8,7 @@ interface RowsProps {
 }
 
 const Rows = ({chances, selectedWord, currentChance}: RowsProps) => {
-  const fillEmptyLines = useMemo(() => (currentChance.length !== 0 ? 4 : 5) - chances.length, [chances, currentChance]);
+  const fillEmptyLines = useMemo(() => (currentChance.length !== 0 ? 5 : 6) - chances.length, [chances, currentChance]);
 
   return <>
     {chances.map((chance, key) => <Word key={key} selectedWord={selectedWord} currentWord={chance}/>)}
