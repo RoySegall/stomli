@@ -21,7 +21,7 @@ const WordChallenge = ({selectedWord, words, switchToNextRandomWord}: WordChalle
   const [stopListenToKeyBoard, setStopListenToKeyBoard] = useState(false);
   const [letterStatus, setLetterStatus] = useState<object>({});
   const won = useMemo(() => chances[chances.length - 1] === selectedWord, [chances, selectedWord]);
-  const lost = useMemo(() => chances.length === 5 && !chances.includes(selectedWord), [selectedWord, chances]);
+  const lost = useMemo(() => chances.length === 6 && !chances.includes(selectedWord), [selectedWord, chances]);
 
   const deleteWord = useCallback(() => {
     setCurrentChance([...currentChance.slice(0, -1)]);
@@ -45,7 +45,7 @@ const WordChallenge = ({selectedWord, words, switchToNextRandomWord}: WordChalle
       let tempChances = chances;
       setCurrentChance([]);
 
-      if (currentWord === selectedWord || tempChances.length === 4) {
+      if (currentWord === selectedWord || tempChances.length === 5) {
         setStopListenToKeyBoard(true);
       }
 
