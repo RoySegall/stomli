@@ -27,8 +27,8 @@ function Button({className, onClick, letter, disabled}: ButtonProps) {
   </button>;
 }
 
-const Row = ({row, addLetter, className, letterStatus}: RowProps) => {
-  return <div className={className}>{row.map(({letter, className, disabled}, letterKey) => {
+const Row = ({row, addLetter, letterStatus}: RowProps) => {
+  return <div className={styles.row}>{row.map(({letter, className, disabled}, letterKey) => {
 
     let status;
     if (Object.keys(letterStatus).includes(letter)) {
@@ -47,19 +47,16 @@ const Row = ({row, addLetter, className, letterStatus}: RowProps) => {
 };
 
 const Keyboard = ({addLetter, letterStatus}: KeyboardProps) => {
-  console.log(letterStatus)
   return <div className={styles.keyboard}>
     <Row addLetter={addLetter} row={keys.Numbers} letterStatus={letterStatus} />
-    <div className={styles.secondRow}>
-      <div>
-        <Button onClick={() => addLetter('Enter')} className={styles.enterButton} letter={'Enter'} />
-      </div>
-      <div className={styles.keys}>
-        <Row addLetter={addLetter} row={keys.Upper} className={styles.upper} letterStatus={letterStatus} />
-        <Row addLetter={addLetter} row={keys.Middle} letterStatus={letterStatus} />
-      </div>
+    <Row addLetter={addLetter} row={keys.Middle} letterStatus={letterStatus} />
+    <Row addLetter={addLetter} row={keys.Bottom} letterStatus={letterStatus} />
+
+    <div className={styles.bottomRow}>
+      <Button onClick={() => addLetter('Enter')} className={styles.enterButton} letter={'אישור'} />
+      <Button onClick={() => addLetter('Delete')} className={styles.enterButton} letter={'מחק'} />
     </div>
-    <Row addLetter={addLetter} row={keys.Bottom} className={styles.bottomRow} letterStatus={letterStatus} />
+
   </div>
 }
 

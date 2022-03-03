@@ -8,24 +8,21 @@ export interface Letter {
 
 interface KeyBoardLayout {
   Numbers: Letter[],
-  Upper: Letter[],
   Middle: Letter[],
   Bottom: Letter[]
 }
 
 export const keys: KeyBoardLayout = {
   Numbers: [
-    {letter: 'delete', className: styles.deleteButton},
-    {letter: '0', disabled: true,},
-    {letter: '9', disabled: true,},
-    {letter: '8', disabled: true,},
-    {letter: '7', disabled: true,},
-    {letter: '6', disabled: true,},
-    {letter: '5', disabled: true,},
-    {letter: '4', disabled: true,},
-    {letter: '3', disabled: true,},
-    {letter: '2', disabled: true,},
-    {letter: '1', disabled: true,},
+    // {letter: 'delete', className: styles.deleteButton},
+    {letter: 'פ'},
+    {letter: 'ם'},
+    {letter: 'ן'},
+    {letter: 'ו'},
+    {letter: 'ט'},
+    {letter: 'א'},
+    {letter: 'ר'},
+    {letter: 'ק'},
   ],
   Middle: [
     {letter: 'ף'},
@@ -38,17 +35,6 @@ export const keys: KeyBoardLayout = {
     {letter: 'ג'},
     {letter: 'ד'},
     {letter: 'ש'},
-  ],
-  Upper: [
-    {letter: 'פ'},
-    {letter: 'ם'},
-    {letter: 'ן'},
-    {letter: 'ו'},
-    {letter: 'ט'},
-    {letter: 'א'},
-    {letter: 'ר'},
-    {letter: 'ק'},
-    {letter: 'ק'}
   ],
   Bottom: [
     {letter: 'ץ'},

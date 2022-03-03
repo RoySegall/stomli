@@ -23,4 +23,16 @@
     }
   }
 
+  @media only screen and (max-width: 400px) {
+    & {
+      width: 98vw;
+      height: 97vh;
+
+      h1 {
+        margin: 0;
+        padding: 0;
+        margin-bottom: .5em;
+      }
+    }
+  }
 }
