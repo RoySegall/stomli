@@ -5,7 +5,16 @@
   .row {
     display: flex;
     justify-content: space-between;
-    padding-bottom: .25em;
+
+    &:not(.endsLetter) {
+      padding-bottom: 1em;
+    }
+
+    &.endsLetter {
+      width: 65%;
+      display: flex;
+      justify-content: space-between;
+    }
   }
 
   .buttonLetter {
@@ -64,11 +73,13 @@
       width: auto;
       display: flex;
       justify-content: space-between;
+      flex-direction: column;
+      padding-top: .5em;
     }
     .buttonLetter {
-      min-height: 35px;
-      min-width: 35px;
-      font-size: 1em;
+      min-height: 40px;
+      min-width: 40px;
+      font-size: 20px;
       padding: 0;
       margin: 0;
     }

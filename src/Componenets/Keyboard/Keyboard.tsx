@@ -12,6 +12,7 @@ interface RowProps {
   addLetter: (letter: string) => void;
   className?: string
   letterStatus: any;
+  endLetters?: boolean,
 }
 
 interface ButtonProps {
@@ -27,8 +28,8 @@ function Button({className, onClick, letter, disabled}: ButtonProps) {
   </button>;
 }
 
-const Row = ({row, addLetter, letterStatus}: RowProps) => {
-  return <div className={styles.row}>{row.map(({letter, className, disabled}, letterKey) => {
+const Row = ({row, addLetter, letterStatus, endLetters}: RowProps) => {
+  return <div className={`${styles.row} ${endLetters && styles.endsLetter}`}>{row.map(({letter, className, disabled}, letterKey) => {
 
     let status;
     if (Object.keys(letterStatus).includes(letter)) {
@@ -53,8 +54,9 @@ const Keyboard = ({addLetter, letterStatus}: KeyboardProps) => {
     <Row addLetter={addLetter} row={keys.Bottom} letterStatus={letterStatus} />
 
     <div className={styles.bottomRow}>
-      <Button onClick={() => addLetter('Enter')} className={styles.enterButton} letter={'אישור'} />
       <Button onClick={() => addLetter('Delete')} className={styles.enterButton} letter={'מחק'} />
+      <Row addLetter={addLetter} row={keys.Ends} endLetters={true} letterStatus={letterStatus} />
+      <Button onClick={() => addLetter('Enter')} className={styles.enterButton} letter={'אישור'} />
     </div>
 
   </div>

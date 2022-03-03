@@ -9,15 +9,14 @@ export interface Letter {
 interface KeyBoardLayout {
   Numbers: Letter[],
   Middle: Letter[],
-  Bottom: Letter[]
+  Bottom: Letter[],
+  Ends: Letter[]
 }
 
 export const keys: KeyBoardLayout = {
   Numbers: [
     // {letter: 'delete', className: styles.deleteButton},
     {letter: 'פ'},
-    {letter: 'ם'},
-    {letter: 'ן'},
     {letter: 'ו'},
     {letter: 'ט'},
     {letter: 'א'},
@@ -25,8 +24,6 @@ export const keys: KeyBoardLayout = {
     {letter: 'ק'},
   ],
   Middle: [
-    {letter: 'ף'},
-    {letter: 'ך'},
     {letter: 'ל'},
     {letter: 'ח'},
     {letter: 'י'},
@@ -37,7 +34,6 @@ export const keys: KeyBoardLayout = {
     {letter: 'ש'},
   ],
   Bottom: [
-    {letter: 'ץ'},
     {letter: 'ת'},
     {letter: 'צ'},
     {letter: 'מ'},
@@ -46,5 +42,12 @@ export const keys: KeyBoardLayout = {
     {letter: 'ב'},
     {letter: 'ס'},
     {letter: 'ז'},
+  ],
+  Ends: [
+    {letter: 'ם'},
+    {letter: 'ן'},
+    {letter: 'ף'},
+    {letter: 'ך'},
+    {letter: 'ץ'},
   ],
 };
