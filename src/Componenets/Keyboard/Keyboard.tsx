@@ -11,7 +11,7 @@ interface RowProps {
   row: Letter[];
   addLetter: (letter: string) => void;
   className?: string
-  letterStatus: object;
+  letterStatus: any;
 }
 
 interface ButtonProps {
@@ -32,7 +32,7 @@ const Row = ({row, addLetter, className, letterStatus}: RowProps) => {
 
     let status;
     if (Object.keys(letterStatus).includes(letter)) {
-      status = letterStatus[letter];
+      status = letterStatus[letter] ;
     }
 
     return <Button
