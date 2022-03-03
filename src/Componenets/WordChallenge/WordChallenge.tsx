@@ -1,5 +1,4 @@
-
-import {useCallback, useEffect, useMemo, useState} from "react";
+import {useCallback, useEffect, useMemo, useReducer, useState} from "react";
 import {toast, ToastContainer} from "react-toastify";
 import styles from "../../App.module.scss";
 import 'react-toastify/dist/ReactToastify.css';
@@ -7,7 +6,7 @@ import {Rows} from "../Rows/Rows";
 import {Lost} from "../Lost/Lost";
 import {Won} from "../Won/Won";
 import {Keyboard} from "../Keyboard/Keyboard";
-import {last} from 'lodash';
+import {getColorClass} from "../Word/Word";
 
 interface WordChallengeProps {
   selectedWord: string
@@ -20,6 +19,7 @@ const WordChallenge = ({selectedWord, words, switchToNextRandomWord}: WordChalle
   const [currentChance, setCurrentChance] = useState<string[]>([]);
   const [chances, setChances] = useState<string[]>([]);
   const [stopListenToKeyBoard, setStopListenToKeyBoard] = useState(false);
+  const [letterStatus, setLetterStatus] = useState<object>({});
   const won = useMemo(() => chances[chances.length - 1] === selectedWord, [chances, selectedWord]);
   const lost = useMemo(() => chances.length === 5 && !chances.includes(selectedWord), [selectedWord, chances]);
 
@@ -51,7 +51,13 @@ const WordChallenge = ({selectedWord, words, switchToNextRandomWord}: WordChalle
 
       // @ts-ignore
       tempChances.push(currentWord);
-      setChances([...tempChances])
+      setChances([...tempChances]);
+
+      Object.entries(currentWord).forEach(([index, letter]) => {
+        // @ts-ignore
+        letterStatus[letter] = getColorClass(selectedWord, index, letter);
+      });
+      setLetterStatus(letterStatus);
     }
   }, [currentChance, setCurrentChance, chances]);
 
@@ -95,6 +101,7 @@ const WordChallenge = ({selectedWord, words, switchToNextRandomWord}: WordChalle
     setCurrentChance([]);
     setChances([]);
     setStopListenToKeyBoard(false);
+    setLetterStatus({});
   }, [selectedWord])
 
   useEffect(() => {
@@ -131,7 +138,7 @@ const WordChallenge = ({selectedWord, words, switchToNextRandomWord}: WordChalle
       <Rows selectedWord={selectedWord} chances={chances} currentChance={currentChance} />
     </div>
 
-    <Keyboard addLetter={addLetter} selectedWord={selectedWord} chances={chances} />
+    <Keyboard addLetter={addLetter} letterStatus={letterStatus} />
   </div>
 };
 
