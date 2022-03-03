@@ -7,7 +7,7 @@ interface WordProps {
   optionalChance?: boolean
 }
 
-function getColorClass(selectedWord: string, index: string, letter: string) {
+export function getColorClass(selectedWord: string, index: string, letter: string) {
   if (selectedWord.includes(letter)) {
     return selectedWord.charAt(parseInt(index)) === letter ? 'correct' : 'wrongPlace';
   }

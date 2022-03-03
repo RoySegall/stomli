@@ -2,12 +2,12 @@
 import {useCallback, useEffect, useMemo, useState} from "react";
 import {toast, ToastContainer} from "react-toastify";
 import styles from "../../App.module.scss";
-import Confetti from "react-confetti";
 import 'react-toastify/dist/ReactToastify.css';
 import {Rows} from "../Rows/Rows";
 import {Lost} from "../Lost/Lost";
 import {Won} from "../Won/Won";
 import {Keyboard} from "../Keyboard/Keyboard";
+import {last} from 'lodash';
 
 interface WordChallengeProps {
   selectedWord: string
@@ -131,7 +131,7 @@ const WordChallenge = ({selectedWord, words, switchToNextRandomWord}: WordChalle
       <Rows selectedWord={selectedWord} chances={chances} currentChance={currentChance} />
     </div>
 
-    <Keyboard addLetter={addLetter} />
+    <Keyboard addLetter={addLetter} selectedWord={selectedWord} chances={chances} />
   </div>
 };
 

@@ -3,8 +3,7 @@ import styles from './Keyboard.module.scss'
 export interface Letter {
   letter: string,
   className?: string,
-  disabled?: boolean,
-  status?: 'correct' | 'misplaced' | 'wrong'
+  disabled?: boolean
 }
 
 interface KeyBoardLayout {
