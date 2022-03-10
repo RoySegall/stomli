@@ -1,3 +1,7 @@
+export function getDictionaryByYear(): 'firstYear' | 'secondYear' | 'thirdYear' | 'leapYear' {
+  return 'firstYear';
+}
+
 export function getTodayWord(): string {
   return 'word';
 }
