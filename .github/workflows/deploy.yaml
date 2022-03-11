@@ -18,8 +18,8 @@ jobs:
       - run: npm install
       - run: npm run build
       - name: Deploy with gh-pages
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
         run: |
           git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/RoySegall/stomli.git
           npx gh-pages -d dist -u "github-actions-bot <support+actions@github.com>"
-          env:
-            GITHUB_TOKEN: ${{ secrets.TOKEN }}
