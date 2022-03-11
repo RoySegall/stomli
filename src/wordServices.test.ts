@@ -2,35 +2,19 @@ import {checkIfWordIsValid, getTodayWord, getNextWord, getDictionaryByYear} from
 import {equal, ok} from 'assert';
 
 describe('Words service', function () {
-  const getDateByYear = (year: number, month = 0, day = 0) => new Date(year, month, day, 0, 0, 0);
+  const getDateByYear = (year: number, month = 0, day = 1) => new Date(year, month, day, 0, 0, 0);
 
   describe('checkIfWordIsValid', () => {
-    it('should fail for words with less than 5 letters', () => {
-      equal(checkIfWordIsValid('אמא'), false);
-    });
-    it('should fail for words with more than 5 letters', () => {
-      equal(checkIfWordIsValid('אהבתיה'), false);
-    });
-    it('should failed for valid words which not in any dictionary', () => {
-      equal(checkIfWordIsValid('סוכרת'), false);
-    });
-    it('should pass for valid words which in the first dictionary', () => {
-      ok(checkIfWordIsValid('בעירה'));
-    });
-    it('should pass for valid words which in the second dictionary', () => {
-      ok(checkIfWordIsValid('החמצה'));
-    });
-    it('should pass for valid words which not in the third dictionary', () => {
-      ok(checkIfWordIsValid('רביכה'));
-    });
-    it('should pass for valid words which not in the leap year dictionary', () => {
-      ok(checkIfWordIsValid('מסעדה'));
-    });
+    it('should fail for words with less than 5 letters', () => {equal(checkIfWordIsValid('אמא'), false)});
+    it('should fail for words with more than 5 letters', () => {equal(checkIfWordIsValid('אהבתיה'), false)});
+    it('should failed for valid words which not in any dictionary', () => {equal(checkIfWordIsValid('סוכרת'), false)});
+    it('should pass for valid words which in the first dictionary', () => {ok(checkIfWordIsValid('בעירה'))});
+    it('should pass for valid words which in the second dictionary', () => {ok(checkIfWordIsValid('החמצה'))});
+    it('should pass for valid words which not in the third dictionary', () => {ok(checkIfWordIsValid('רביכה'))});
+    it('should pass for valid words which not in the leap year dictionary', () => {ok(checkIfWordIsValid('מסעדה'))});
   });
 
   describe('getDictionaryByYear', () => {
-    const getDateByYear = (year: number) => new Date(year, 0, 0, 0, 0, 0);
-
     it('should return leapYear for a leap year', () => {
       equal(getDictionaryByYear(getDateByYear(2000)), 'leapYear');
       equal(getDictionaryByYear(getDateByYear(2004)), 'leapYear');
