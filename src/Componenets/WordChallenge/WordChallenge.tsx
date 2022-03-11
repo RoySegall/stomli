@@ -134,7 +134,7 @@ const WordChallenge = ({selectedWord, words, switchToNextRandomWord}: WordChalle
     {lost && <Lost selectedWord={selectedWord} /> }
 
     <div className={styles.upper}>
-      <h1>סתום-לי</h1>
+      <h1>סתום-לdי</h1>
       <Rows selectedWord={selectedWord} chances={chances} currentChance={currentChance} />
     </div>
 
