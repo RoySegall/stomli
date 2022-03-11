@@ -1,7 +1,7 @@
 name: Unit test
 on:
   pull_request:
-    [open]
+    branches: [ master ]
 jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
