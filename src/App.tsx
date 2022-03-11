@@ -1,7 +1,6 @@
 import {WordChallenge} from "./Componenets/WordChallenge/WordChallenge";
 import {words} from "./words";
 import {useCallback, useEffect, useState} from "react";
-import {random, clone} from 'lodash';
 import {getNextWord, getTodayWord} from './wordsService';
 
 function App() {
