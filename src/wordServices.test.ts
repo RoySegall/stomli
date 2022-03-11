@@ -1,4 +1,4 @@
-import {checkIfWordIsValid, getTodayWord, getNextWord, getDictionaryByYear} from './wordsService';
+import {checkIfWordIsValid, getTodayWord, getNextWord, getDictionaryByYear, getDayInYear} from './wordsService';
 import {equal, ok} from 'assert';
 
 describe('Words service', function () {
@@ -41,6 +41,22 @@ describe('Words service', function () {
     });
   });
 
+  describe('getDayInYear', () => {
+    const maxDates = {1: 31, 2: 28, 3: 31, 4: 30, 5: 31, 6: 30, 7: 31, 8: 31, 9: 30, 10: 31, 11: 30, 12: 31};
+
+    it('should return proper number for each day in the year', () => {
+      let it = 0;
+      Object.entries(maxDates).forEach(([month, maxDays]) => {
+        const monthAsDate = parseInt(month) - 1;
+
+        for (let i = 1; i <= maxDays; i++) {
+          equal(getDayInYear(2022, monthAsDate, i), it);
+          it++;
+        }
+      });
+    })
+  });
+
   describe('getTodayWord', () => {
     it('should return ? for 01/01 for the first year', () => {
       equal(getTodayWord(getDateByYear(2001)), 'בעירה');
@@ -49,13 +65,13 @@ describe('Words service', function () {
       equal(getTodayWord(getDateByYear(2002)), 'החמצה');
     });
     it('should return ? for 01/01 for the third year', () => {
-      equal(getTodayWord(getDateByYear(2003)), 'החמצה');
+      equal(getTodayWord(getDateByYear(2003)), 'רביכה');
     });
     it('should return ? for 01/01 for the leap year', () => {
-      equal(getTodayWord(getDateByYear(2000)), 'רביכה');
+      equal(getTodayWord(getDateByYear(2000)), 'מסעדה');
     });
     it('should return ? for 29/02 for the leap year', () => {
-      equal(getTodayWord(getDateByYear(2000)), 'רביכה');
+      equal(getTodayWord(getDateByYear(2000, 1, 29)), 'גרגרן');
     });
   });
 
@@ -75,5 +91,4 @@ describe('Words service', function () {
       checkWordsNotRepeats(['פיצה', 'אימוץ', 'רביכה'])
     });
   });
-
 });
