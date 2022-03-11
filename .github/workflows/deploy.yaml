@@ -17,4 +17,9 @@ jobs:
           git config --global user.name "Roy segall"
       - run: npm install
       - run: npm run build
-      - run: npm run deploy
+      - name: Deploy with gh-pages
+        run: |
+          git remote set-url origin https://git:${TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+          npx gh-pages -d build -u "github-actions-bot <support+actions@github.com>"
+          env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
