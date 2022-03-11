@@ -2,23 +2,23 @@ import {WordChallenge} from "./Componenets/WordChallenge/WordChallenge";
 import {words} from "./words";
 import {useCallback, useEffect, useState} from "react";
 import {random, clone} from 'lodash';
+import {getNextWord, getTodayWord} from './wordsService';
 
 function App() {
   const [selectedWord, setSelectedWord] = useState('');
-  const getTodayWord = useCallback(() => {
-    // Until we have a lot of words, we'll use the first one as today word.
-    return words[0];
-  }, []);
+  const [usedWords, setUsedWords] = useState<string[]>([]);
 
   const switchToNextRandomWord = useCallback(() => {
-    let clonedWord = clone(words);
+    const nextWord = getNextWord(usedWords);
 
-    delete clonedWord[0];
-    setSelectedWord(clonedWord[random(0, clonedWord.length)]);
-  }, []);
+    setSelectedWord(nextWord);
+    setUsedWords([nextWord, ...usedWords])
+  }, [selectedWord, usedWords]);
 
   useEffect(() => {
-    setSelectedWord(getTodayWord());
+    const date = new Date();
+    setSelectedWord(getTodayWord(date));
+    setUsedWords([selectedWord])
   }, []);
 
   return <WordChallenge
