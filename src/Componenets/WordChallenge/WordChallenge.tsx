@@ -3,10 +3,11 @@ import {toast, ToastContainer} from "react-toastify";
 import styles from "../../App.module.scss";
 import 'react-toastify/dist/ReactToastify.css';
 import {Rows} from "../Rows/Rows";
-import {Lost} from "../Lost/Lost";
-import {Won} from "../Won/Won";
 import {Keyboard} from "../Keyboard/Keyboard";
 import {getColorClass} from "../Word/Word";
+import {Message} from "../Message/Message";
+import useWindowSize from "react-use/lib/useWindowSize";
+import Confetti from "react-confetti";
 
 interface WordChallengeProps {
   selectedWord: string
@@ -22,6 +23,7 @@ const WordChallenge = ({selectedWord, words, switchToNextRandomWord}: WordChalle
   const [letterStatus, setLetterStatus] = useState<object>({});
   const won = useMemo(() => chances[chances.length - 1] === selectedWord, [chances, selectedWord]);
   const lost = useMemo(() => chances.length === 6 && !chances.includes(selectedWord), [selectedWord, chances]);
+  const {width, height} = useWindowSize();
 
   const deleteWord = useCallback(() => {
     setCurrentChance([...currentChance.slice(0, -1)]);
@@ -130,8 +132,10 @@ const WordChallenge = ({selectedWord, words, switchToNextRandomWord}: WordChalle
       pauseOnHover
       theme={'dark'}
     />
-    {won && <Won switchToNextRandomWord={switchToNextRandomWord}  /> }
-    {lost && <Lost selectedWord={selectedWord} /> }
+
+    {won && <Confetti width={width} height={height}/>}
+    {(won || lost) &&
+      <Message type={won ? 'won' : 'lost'} selectedWord={selectedWord} switchToNextRandomWord={switchToNextRandomWord} />}
 
     <div className={styles.upper}>
       <h1>סתום-לי</h1>
