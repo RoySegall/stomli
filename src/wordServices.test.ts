@@ -10,7 +10,7 @@ describe('Words service', function () {
     it('should failed for valid words which not in any dictionary', () => {equal(checkIfWordIsValid('סוכרת'), false)});
     it('should pass for valid words which in the first dictionary', () => {ok(checkIfWordIsValid('בעירה'))});
     it('should pass for valid words which in the second dictionary', () => {ok(checkIfWordIsValid('החמצה'))});
-    it('should pass for valid words which not in the third dictionary', () => {ok(checkIfWordIsValid('רביכה'))});
+    it('should pass for valid words which not in the third dictionary', () => {ok(checkIfWordIsValid('אהובי'))});
     it('should pass for valid words which not in the leap year dictionary', () => {ok(checkIfWordIsValid('מסעדה'))});
   });
 
@@ -65,7 +65,7 @@ describe('Words service', function () {
       equal(getTodayWord(getDateByYear(2002)), 'החמצה');
     });
     it('should return ? for 01/01 for the third year', () => {
-      equal(getTodayWord(getDateByYear(2003)), 'רביכה');
+      equal(getTodayWord(getDateByYear(2003)), 'אהובי');
     });
     it('should return ? for 01/01 for the leap year', () => {
       equal(getTodayWord(getDateByYear(2000)), 'מסעדה');
