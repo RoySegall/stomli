@@ -53,14 +53,13 @@ function useWordChallenge(selectedWord: string, words: string[]): UseWordChallen
         setStopListenToKeyBoard(true);
       }
 
-      // @ts-ignore
       tempChances.push(currentWord);
       setChances([...tempChances]);
 
       Object.entries(currentWord).forEach(([index, letter]) => {
         letterStatus[letter] = getColorClass(selectedWord, index, letter);
       });
-      setLetterStatus(letterStatus);
+      setLetterStatus({...letterStatus});
     }
   }, [currentChance, setCurrentChance, chances]);
 
