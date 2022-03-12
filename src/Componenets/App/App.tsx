@@ -1,23 +1,9 @@
-import {useCallback, useEffect, useState} from "react";
 import {WordChallenge} from "../WordChallenge/WordChallenge";
-import {getNextWord, getTodayWord, getAllWords} from "../../wordsService";
+import {getAllWords} from "../../wordsService";
+import {useApp} from './useApp';
 
 function App() {
-  const [selectedWord, setSelectedWord] = useState('');
-  const [usedWords, setUsedWords] = useState<string[]>([]);
-
-  const switchToNextRandomWord = useCallback(() => {
-    const nextWord = getNextWord(usedWords);
-
-    setSelectedWord(nextWord);
-    setUsedWords([nextWord, ...usedWords])
-  }, [selectedWord, usedWords]);
-
-  useEffect(() => {
-    const date = new Date();
-    setSelectedWord(getTodayWord(date));
-    setUsedWords([selectedWord])
-  }, []);
+  const {selectedWord, switchToNextRandomWord} = useApp();
 
   return <WordChallenge
     selectedWord={selectedWord}

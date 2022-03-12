@@ -30,7 +30,7 @@
     color: var(--buttonLetterTextColor);
 
     &:hover:not([disabled]) {
-      background: var(----buttonLetterHoverBakgroundNotDisabled);
+      background: var(--buttonLetterHoverBakgroundNotDisabled);
       cursor: pointer;
     }
 

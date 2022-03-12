@@ -20,7 +20,7 @@ const WordChallenge = ({selectedWord, words, switchToNextRandomWord}: WordChalle
   const [currentChance, setCurrentChance] = useState<string[]>([]);
   const [chances, setChances] = useState<string[]>([]);
   const [stopListenToKeyBoard, setStopListenToKeyBoard] = useState(false);
-  const [letterStatus, setLetterStatus] = useState<object>({});
+  const [letterStatus, setLetterStatus] = useState<Record<string, string>>({});
   const won = useMemo(() => chances[chances.length - 1] === selectedWord, [chances, selectedWord]);
   const lost = useMemo(() => chances.length === 6 && !chances.includes(selectedWord), [selectedWord, chances]);
   const {width, height} = useWindowSize();
@@ -56,7 +56,6 @@ const WordChallenge = ({selectedWord, words, switchToNextRandomWord}: WordChalle
       setChances([...tempChances]);
 
       Object.entries(currentWord).forEach(([index, letter]) => {
-        // @ts-ignore
         letterStatus[letter] = getColorClass(selectedWord, index, letter);
       });
       setLetterStatus(letterStatus);
