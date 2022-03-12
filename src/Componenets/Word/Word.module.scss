@@ -17,18 +17,18 @@
     border-radius: 5px;
 
     &.correct {
-      background: limegreen;
-      color: white;
+      background: var(--correctBackground);
+      color: var(--correctText);
     }
 
     &.wrong {
-      background: gray;
-      color: white;
+      background: var(--wrongBackgroundColor);
+      color: var(--wrongTextColor);
     }
 
     &.wrongPlace {
-      color: white;
-      background: sandybrown;
+      color: var(--wrongPlaceTextColor);
+      background: var(--wrongPlaceBackgroundColor);
     }
   }
 

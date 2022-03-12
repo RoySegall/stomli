@@ -1,6 +1,6 @@
-import {useCallback, useEffect, useMemo, useReducer, useState} from "react";
+import {useCallback, useEffect, useMemo, useState} from "react";
 import {toast, ToastContainer} from "react-toastify";
-import styles from "../../App.module.scss";
+import styles from "../App/App.module.scss";
 import 'react-toastify/dist/ReactToastify.css';
 import {Rows} from "../Rows/Rows";
 import {Keyboard} from "../Keyboard/Keyboard";

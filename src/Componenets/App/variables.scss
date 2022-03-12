@@ -1,0 +1,30 @@
+:root {
+  --buttonLetterTextColor: black;
+  --buttonLetterBakground: #e8e8e8;
+  --buttonLetterHoverBakgroundNotDisabled: #e0dcdc;
+
+  --correctBackground: limegreen;
+  --correctText: white;
+  --correcHoverBackground: limegreen;
+
+  --wrongBackgroundColor: gray;
+  --wrongTextColor: white;
+  --wrongHoverBackgroundColor: gray;
+
+  --wrongPlaceTextColor: white;
+  --wrongPlaceBackgroundColor: sandybrown;
+  --wrongPlaceHoverBackgroundColor: sandybrown;
+
+  --messageBackground: white;
+  --messageBorderColor: black;
+
+  --messageNextWordBackground: #f6f6f6;
+  --messageNextWordTextColor: black;
+  --messageNextWordBorderColor: black;
+
+  --messageWonBorderColor: green;
+  --messageWonNextWordBorderColor: green;
+
+  --messageLostBorderColor: red;
+  --messageLostNextWordBorderColor: red;
+}

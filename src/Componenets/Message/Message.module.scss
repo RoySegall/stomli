@@ -1,15 +1,13 @@
 .message {
   position: absolute;
   top: 20vh;
-  background: white;
+  background: var(--messageBackground);
   width: 80vw;
   text-align: center;
-  border: solid 1px black;
+  border: solid 1px var(--messageBorderColor);
   box-shadow: 0 1px 3px 0 rgb(0 0 0 / 10%), 0 1px 2px -1px rgb(0 0 0 / 10%);
   padding-bottom: 1em;
   left: 10vw;
-
-  padding-bottom: 1em;
 
   .nextWord {
     margin: 10px;
@@ -17,25 +15,25 @@
     font-weight: 500;
     font-family: "Heebo", sans-serif;
     border-radius: 5px;
-    background: #f6f6f6;
-    color: black;
+    background: var(--messageNextWordBackground);
+    color: var(--messageNextWordTextColor);
     box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-    border: solid 1px black;
+    border: solid 1px var(--messageNextWordBorderColor);
   }
 
   &.won {
-    border-color: green;
+    border-color: var(--messageWonBorderColor);
 
     .nextWord {
-      border-color: green;
+      border-color: var(--messageWonNextWordBorderColor);
     }
   }
 
   &.lost {
-    border-color: red;
+    border-color: var(--messageLostBorderColor);
 
     .nextWord {
-      border-color: red;
+      border-color: var(--messageLostNextWordBorderColor);
     }
   }
 }
