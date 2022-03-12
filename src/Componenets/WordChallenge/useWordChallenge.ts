@@ -2,6 +2,7 @@ import {useCallback, useEffect, useMemo, useState} from "react";
 import useWindowSize from "react-use/lib/useWindowSize";
 import {toast} from "react-toastify";
 import {getColorClass} from "../Word/Word";
+import styles from "../App/App.module.scss";
 
 type LetterStatus = Record<string, string>;
 
@@ -13,7 +14,8 @@ interface UseWordChallengeInterface {
   chances: string[]
   currentChance: string[]
   addLetter: (letter: string) => void;
-  letterStatus: LetterStatus
+  letterStatus: LetterStatus;
+  className: string;
 }
 
 function useWordChallenge(selectedWord: string, words: string[]): UseWordChallengeInterface {
@@ -22,6 +24,7 @@ function useWordChallenge(selectedWord: string, words: string[]): UseWordChallen
   const [chances, setChances] = useState<string[]>([]);
   const [stopListenToKeyBoard, setStopListenToKeyBoard] = useState(false);
   const [letterStatus, setLetterStatus] = useState<LetterStatus>({});
+  const [darkMode, setDarkMode] = useState<boolean>(false);
   const won = useMemo(() => chances[chances.length - 1] === selectedWord, [chances, selectedWord]);
   const lost = useMemo(() => chances.length === 6 && !chances.includes(selectedWord), [selectedWord, chances]);
   const {width, height} = useWindowSize();
@@ -117,6 +120,30 @@ function useWordChallenge(selectedWord: string, words: string[]): UseWordChallen
     };
   }, [currentChance, stopListenToKeyBoard, selectedWord]);
 
+  const className = useMemo(() => {
+
+    if (!darkMode) {
+      return styles.app;
+    }
+
+    return `${styles.app} ${styles.dark}`;
+  }, [darkMode]);
+
+  function handleCallback({matches}: MediaQueryListEvent) {
+    setDarkMode(matches);
+  }
+
+  useEffect(() => {
+    const colorSchema = window.matchMedia('(prefers-color-scheme: dark)');
+
+    setDarkMode(colorSchema.matches)
+
+    colorSchema.addEventListener("change", handleCallback);
+    return () => {
+      colorSchema.removeEventListener("change", handleCallback);
+    };
+  }, []);
+
   return {
     won,
     lost,
@@ -125,7 +152,8 @@ function useWordChallenge(selectedWord: string, words: string[]): UseWordChallen
     chances,
     currentChance,
     addLetter,
-    letterStatus
+    letterStatus,
+    className
   }
 }
 

@@ -1,20 +1,20 @@
 @import './variables';
 
 body {
-  background: var(--appBackground);
-  color: var(--appTextColor);
+  margin: 0;
 }
-
 .app {
   direction: rtl;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 75vw;
+  width: 100%;
+  height: 100%;
   font-family: "Heebo", sans-serif;
-  height: 98vh;
   justify-content: space-between;
   margin: 0 auto;
+  background: var(--appBackground);
+  color: var(--appTextColor);
 
   .upper {
     width: 100%;
@@ -25,15 +25,15 @@ body {
 
     h1 {
       border-bottom: solid 1px var(--h1BorderBottomColor);
-      width: 100%;
+      width: 75vw;
       text-align: center;
     }
   }
 
   @media only screen and (max-width: 1000px) {
     & {
-      width: 90vw;
-      height: 97vh;
+      width: 100vw;
+      height: 100vh;
       display: block;
 
       h1 {
@@ -47,5 +47,39 @@ body {
   &.dark {
     --appBackground: black;
     --appTextColor: white;
+
+    --h1BorderBottomColor: white;
+
+    --buttonLetterTextColor: black;
+    --buttonLetterBakground: #e8e8e8;
+    --buttonLetterHoverBakgroundNotDisabled: #e0dcdc;
+
+    --correctBackground: limegreen;
+    --correctText: white;
+    --correcHoverBackground: limegreen;
+
+    --wrongBackgroundColor: gray;
+    --wrongTextColor: white;
+    --wrongHoverBackgroundColor: gray;
+
+    --wrongPlaceTextColor: white;
+    --wrongPlaceBackgroundColor: sandybrown;
+    --wrongPlaceHoverBackgroundColor: sandybrown;
+
+    --messageBackground: white;
+    --messageBorderColor: black;
+
+    --messageNextWordBackground: #f6f6f6;
+    --messageNextWordTextColor: white;
+    --messageNextWordBorderColor: white;
+
+    --messageWonBorderColor: green;
+    --messageWonNextWordBorderColor: green;
+
+    --messageLostBorderColor: red;
+    --messageLostNextWordBorderColor: red;
+
+    --letterBorderColor: white;
+    --letterTextColor: white;
   }
 }

@@ -1,4 +1,4 @@
-import {toast, ToastContainer} from "react-toastify";
+import {ToastContainer} from "react-toastify";
 import styles from "../App/App.module.scss";
 import 'react-toastify/dist/ReactToastify.css';
 import {Rows} from "../Rows/Rows";
@@ -14,9 +14,9 @@ interface WordChallengeProps {
 }
 
 const WordChallenge = ({selectedWord, words, switchToNextRandomWord}: WordChallengeProps) => {
-  const {won, width, height, lost, chances, currentChance, addLetter, letterStatus} = useWordChallenge(selectedWord, words) as any;
+  const {won, width, height, lost, chances, currentChance, addLetter, letterStatus, className} = useWordChallenge(selectedWord, words);
 
-  return <div className={`${styles.app} ${styles.dark}`}>
+  return <div className={className}>
     <ToastContainer
       position="top-center"
       autoClose={5000}
