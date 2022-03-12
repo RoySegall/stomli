@@ -40,4 +40,9 @@
       }
     }
   }
+
+  &.dark {
+    --appBackground: black;
+    --appTextColor: white;
+  }
 }

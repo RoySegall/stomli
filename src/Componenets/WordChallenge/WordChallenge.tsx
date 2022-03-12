@@ -118,7 +118,7 @@ const WordChallenge = ({selectedWord, words, switchToNextRandomWord}: WordChalle
     };
   }, [currentChance, stopListenToKeyBoard, selectedWord]);
 
-  return <div className={styles.app}>
+  return <div className={`${styles.app} ${styles.dark}`}>
     <ToastContainer
       position="top-center"
       autoClose={5000}
