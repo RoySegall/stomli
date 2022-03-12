@@ -1,4 +1,9 @@
 :root {
+  --appBackground: white;
+  --appTextColor: black;
+
+  --h1BorderBottomColor: black;
+
   --buttonLetterTextColor: black;
   --buttonLetterBakground: #e8e8e8;
   --buttonLetterHoverBakgroundNotDisabled: #e0dcdc;
@@ -27,4 +32,7 @@
 
   --messageLostBorderColor: red;
   --messageLostNextWordBorderColor: red;
+
+  --letterBorderColor: black;
+  --letterTextColor: black;
 }
