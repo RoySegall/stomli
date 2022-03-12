@@ -8,8 +8,8 @@
     padding: 10px;
     font-size: 45px;
     font-weight: 300;
-    border: solid 1px #000000;
-    color: black;
+    border: solid 1px var(--letterBorderColor);
+    color: var(--letterTextColor);
     height: 45px;
     width: 45px;
     margin: 10px;
@@ -17,18 +17,18 @@
     border-radius: 5px;
 
     &.correct {
-      background: limegreen;
-      color: white;
+      background: var(--correctBackground);
+      color: var(--correctText);
     }
 
     &.wrong {
-      background: gray;
-      color: white;
+      background: var(--wrongBackgroundColor);
+      color: var(--wrongTextColor);
     }
 
     &.wrongPlace {
-      color: white;
-      background: sandybrown;
+      color: var(--wrongPlaceTextColor);
+      background: var(--wrongPlaceBackgroundColor);
     }
   }
 

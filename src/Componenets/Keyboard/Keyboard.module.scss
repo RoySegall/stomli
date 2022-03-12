@@ -26,38 +26,38 @@
     font-family: "Heebo", sans-serif;
     border-radius: 5px;
     border: none;
-    background: #e8e8e8;
-    color: black;
+    background: var(--buttonLetterBakground);
+    color: var(--buttonLetterTextColor);
 
     &:hover:not([disabled]) {
-      background: #e0dcdc;
+      background: var(--buttonLetterHoverBakgroundNotDisabled);
       cursor: pointer;
     }
 
     &.correct {
-      background: limegreen;
-      color: white;
+      background: var(--correctBackground);
+      color: var(--correctText);
 
       &:hover {
-        background: limegreen;
+        background: var(--correcHoverBackground);
       }
     }
 
     &.wrong {
-      background: gray;
-      color: white;
+      background: var(--wrongBackgroundColor);
+      color: var(--wrongTextColor);
 
       &:hover {
-        background: gray;
+        background: var(--wrongHoverBackgroundColor);
       }
     }
 
     &.wrongPlace {
-      color: white;
-      background: sandybrown;
+      color: var(--wrongPlaceTextColor);
+      background: var(--wrongPlaceBackgroundColor);
 
       &:hover {
-        background: sandybrown;
+        background: var(--wrongPlaceHoverBackgroundColor);
       }
     }
   }
@@ -74,7 +74,10 @@
       justify-content: space-between;
       flex-direction: column;
       padding-top: .5em;
+      margin-left: 10px;
+      margin-right: 10px;
     }
+
     .buttonLetter {
       min-height: 40px;
       min-width: 40px;

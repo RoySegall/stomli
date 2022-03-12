@@ -1,0 +1,85 @@
+@import './variables';
+
+body {
+  margin: 0;
+}
+.app {
+  direction: rtl;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  font-family: "Heebo", sans-serif;
+  justify-content: space-between;
+  margin: 0 auto;
+  background: var(--appBackground);
+  color: var(--appTextColor);
+
+  .upper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: auto;
+
+    h1 {
+      border-bottom: solid 1px var(--h1BorderBottomColor);
+      width: 75vw;
+      text-align: center;
+    }
+  }
+
+  @media only screen and (max-width: 1000px) {
+    & {
+      width: 100vw;
+      height: 100vh;
+      display: block;
+
+      h1 {
+        margin: 0;
+        padding: 0;
+        margin-bottom: .5em;
+      }
+    }
+  }
+
+  &.dark {
+    --appBackground: black;
+    --appTextColor: white;
+
+    --h1BorderBottomColor: white;
+
+    --buttonLetterTextColor: black;
+    --buttonLetterBakground: #e8e8e8;
+    --buttonLetterHoverBakgroundNotDisabled: #e0dcdc;
+
+    --correctBackground: limegreen;
+    --correctText: white;
+    --correcHoverBackground: limegreen;
+
+    --wrongBackgroundColor: gray;
+    --wrongTextColor: white;
+    --wrongHoverBackgroundColor: gray;
+
+    --wrongPlaceTextColor: white;
+    --wrongPlaceBackgroundColor: sandybrown;
+    --wrongPlaceHoverBackgroundColor: sandybrown;
+
+    --messageBackground: black;
+    --messageBorderColor: white;
+
+    --messageNextWordBackground: #f6f6f6;
+    --messageNextWordTextColor: black;
+    --messageNextWordBorderColor: white;
+
+    --messageWonBorderColor: green;
+    --messageWonNextWordBorderColor: green;
+
+    --messageLostBorderColor: red;
+    --messageLostNextWordBorderColor: red;
+
+    --letterBorderColor: white;
+    --letterTextColor: white;
+  }
+}

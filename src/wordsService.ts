@@ -3,7 +3,7 @@ import {filter, shuffle} from 'lodash';
 
 type YearTypes = 'firstYear' | 'secondYear' | 'thirdYear' | 'leapYear';
 
-function getAllWords(): string[] {
+export function getAllWords(): string[] {
   const {leapYear, secondYear, thirdYear, firstYear} = shuffledWords;
   return [...leapYear, ...secondYear, ...thirdYear, ...firstYear]
 }
