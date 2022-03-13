@@ -57,7 +57,7 @@ function useWordChallenge(selectedWord: string, words: string[]): UseWordChallen
       setChances([...tempChances]);
 
       Object.entries(currentWord).forEach(([index, letter]) => {
-        letterStatus[letter] = getColorClass(selectedWord, index, letter);
+        letterStatus[letter] = getColorClass(selectedWord, index, letter, currentWord);
       });
       setLetterStatus({...letterStatus});
     }
