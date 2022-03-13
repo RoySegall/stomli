@@ -19,7 +19,7 @@ interface UseWordChallengeInterface {
 }
 
 function useWordChallenge(selectedWord: string, words: string[]): UseWordChallengeInterface {
-  const allowedLetters = 'אבגדהוזחטיכלמנסעפצקרשתץםףן'
+  const allowedLetters = 'אבגדהוזחטיכלמנסעפצקרשתץםףןך'
   const [currentChance, setCurrentChance] = useState<string[]>([]);
   const [chances, setChances] = useState<string[]>([]);
   const [stopListenToKeyBoard, setStopListenToKeyBoard] = useState(false);
@@ -57,7 +57,7 @@ function useWordChallenge(selectedWord: string, words: string[]): UseWordChallen
       setChances([...tempChances]);
 
       Object.entries(currentWord).forEach(([index, letter]) => {
-        letterStatus[letter] = getColorClass(selectedWord, index, letter);
+        letterStatus[letter] = getColorClass(selectedWord, index, letter, currentWord);
       });
       setLetterStatus({...letterStatus});
     }
