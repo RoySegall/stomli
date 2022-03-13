@@ -6,7 +6,7 @@ function App() {
   const {selectedWord, switchToNextRandomWord} = useApp();
 
   return <WordChallenge
-    selectedWord={'הפגנה'}
+    selectedWord={selectedWord}
     words={getAllWords()}
     switchToNextRandomWord={switchToNextRandomWord} />;
 }
