@@ -1,5 +1,6 @@
-import {wikiDictionaryScrape} from './ScrapeUtils';
+import {wikiDictionaryScrape, songsScrape} from './ScrapeUtils';
 
 (async () => {
-  await wikiDictionaryScrape();
+  // await wikiDictionaryScrape();
+  await songsScrape();
 })();

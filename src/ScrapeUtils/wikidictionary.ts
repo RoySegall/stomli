@@ -1,6 +1,6 @@
-import * as puppeteer from "puppeteer";
 import {writeFile} from "fs";
 import {Page} from "puppeteer";
+import {openPuppeteerPage} from "./api";
 
 let words: any = [];
 
@@ -39,10 +39,7 @@ async function startScrape(page: Page) {
 }
 
 export async function scrape() {
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
-
-  await page.goto('https://he.wiktionary.org/wiki/%D7%9E%D7%99%D7%95%D7%97%D7%93:%D7%9B%D7%9C_%D7%94%D7%93%D7%A4%D7%99%D7%9D/%D7%90');
+  const {page, browser} = await openPuppeteerPage('https://he.wiktionary.org/wiki/%D7%9E%D7%99%D7%95%D7%97%D7%93:%D7%9B%D7%9C_%D7%94%D7%93%D7%A4%D7%99%D7%9D/%D7%90');
 
   await startScrape(page);
 
