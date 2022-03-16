@@ -60,8 +60,25 @@ async function buildUniquePages(): Promise<string[]> {
   return uniq(links.filter(item => item.includes('wrkid')));
 }
 
+async function getWordsFromSongPage(url: string) {
+  const {page, browser} = await openPuppeteerPage(url);
+  const selector = '.artist_lyrics_text';
+  await page.waitForSelector(selector);
+
+  const song = await page.evaluate((selector) => {
+    const [span] = Array.from(document.querySelectorAll(selector));
+    return span.textContent.split('|')[0].trim();
+  }, selector);
+
+  const regex = /^[א-ת]{5}/gm;
+
+  console.log(regex.exec(song));
+  await browser.close();
+}
+
 export async function scrape() {
   console.log('Start scraping songs');
-  const pages = await buildUniquePages();
-  console.log(pages);
+  // const pages = await buildUniquePages();
+  const pages = ['https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=975&wrkid=21312'];
+  await getWordsFromSongPage(pages[0]);
 }
