@@ -1,6 +1,6 @@
 import {openPuppeteerPage} from "./api";
 import {uniq} from "lodash";
-import {Page} from "puppeteer";
+import {Browser, Page} from "puppeteer";
 
 const urls = [
   'https://shironet.mako.co.il/artist?type=works&lang=1&prfid=975',
@@ -8,22 +8,25 @@ const urls = [
   'https://shironet.mako.co.il/artist?type=works&lang=1&prfid=975&sort=alpha&class=2',
 ];
 
-async function scrapeNextPages(page: Page) {
+async function scrapeNextPages(page: Page): Promise<string> {
   try {
     const results = await page.waitForXPath("//a[contains(., 'הבא') and @class='artist_nav_bar']", {timeout: 3000});
     if (results) {
-      const nextPageLink = await (await results.getProperty('href')).jsonValue() as string;
-      await page.goto(nextPageLink);
+      const propertyValue = await results.getProperty('href');
+      return propertyValue.jsonValue();
     }
+
+    return '';
   } catch (e) {
-    console.log('Could not found the next page link');
+    return '';
   }
 }
 
-async function scrapePage(url: string, links: string[]) {
-  const {page, browser} = await openPuppeteerPage(url);
+async function scrapePage(page: Page, url: string, links: string[]): Promise<string[]> {
   console.log('scraping ', url)
   const selector = 'a.artist_player_songlist';
+
+  await page.goto(url);
 
   const linksFromCurrentPage = await page.evaluate((selector) => {
     const anchors = Array.from(document.querySelectorAll(selector));
@@ -32,19 +35,28 @@ async function scrapePage(url: string, links: string[]) {
     });
   }, selector);
 
-  await browser.close();
+  links = [...links, ...linksFromCurrentPage];
+  const nextPage = await scrapeNextPages(page);
 
-  return [...links, ...linksFromCurrentPage];
+  if (nextPage) {
+    return scrapePage(page, nextPage, links);
+  }
+
+  return links;
 }
 
 async function buildUniquePages(): Promise<string[]> {
   let links = [''];
+  let browsers: Browser[] = [];
 
   for await (let url of urls) {
-    const linksFromPage = await scrapePage(url, links);
+    const {page, browser} = await openPuppeteerPage(url);
+    browsers.push(browser);
+    const linksFromPage = await scrapePage(page, url, links);
     links = [...linksFromPage, ...links]
   }
 
+  browsers.forEach(browser => browser.close());
   return uniq(links.filter(item => item.includes('wrkid')));
 }
 
