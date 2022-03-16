@@ -1,0 +1,27 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./scraper.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+
+model SongsPage {
+  id        Int     @id @default(autoincrement())
+  url       String
+  scraped   Boolean
+}
+
+model SongURL {
+  id        Int     @id @default(autoincrement())
+  url       String
+  scraped   Boolean
+}
+
+model Word {
+  id    Int     @id @default(autoincrement())
+  word  String
+}
+

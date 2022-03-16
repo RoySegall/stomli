@@ -2,6 +2,9 @@ import {openPuppeteerPage} from "./api";
 import {uniq, flatten} from "lodash";
 import {Browser, Page} from "puppeteer";
 import {writeFile} from "fs";
+import { PrismaClient } from '@prisma/client'
+
+const prisma = new PrismaClient();
 
 const urls = [
   'https://shironet.mako.co.il/artist?type=works&lang=1&prfid=975',
@@ -23,8 +26,8 @@ async function scrapeNextPages(page: Page): Promise<string> {
   }
 }
 
-async function scrapePage(page: Page, url: string, links: string[]): Promise<string[]> {
-  console.log('scraping ', url)
+async function scrapePage(page: Page, url: string) {
+  // Check here if this a sub page of the artist and check if it's already been scraped.
   const selector = 'a.artist_player_songlist';
 
   await page.goto(url);
@@ -36,29 +39,54 @@ async function scrapePage(page: Page, url: string, links: string[]): Promise<str
     });
   }, selector);
 
-  links = [...links, ...linksFromCurrentPage];
+  await Promise.all(
+    uniq(linksFromCurrentPage.filter(item => item.includes('wrkid')))
+    .map(async url => {
+      const results = await prisma.songURL.findFirst({where: {url}})
+
+      if (!results) {
+        await prisma.songURL.create({data: {url, scraped: false}})
+      }
+    })
+  );
+
+  console.log('Links collected ', url)
+
   const nextPage = await scrapeNextPages(page);
-
   if (nextPage) {
-    return scrapePage(page, nextPage, links);
+    await scrapePage(page, nextPage);
   }
-
-  return links;
 }
 
-async function buildUniqueURLs(): Promise<string[]> {
-  let links = [''];
+async function buildUniqueURLs() {
   let browsers: Browser[] = [];
 
   for await (let url of urls) {
     const {page, browser} = await openPuppeteerPage(url);
     browsers.push(browser);
-    const linksFromPage = await scrapePage(page, url, links);
-    links = [...linksFromPage, ...links]
+
+    // Check here if the page were scraped.
+    let songPage = await prisma.songsPage.findFirst({where:{url}});
+
+    if (!songPage) {
+      console.log('Scraping', url)
+      songPage = await prisma.songsPage.create({data: {url, scraped: false}})
+    }
+
+    if (!songPage.scraped) {
+      try {
+        await scrapePage(page, url);
+        await prisma.songsPage.update({data: {scraped: true}, where: {id: songPage.id}})
+        console.log(`${url} was scraped`)
+      } catch (e) {
+        console.error(`Failed scraped ${url}`, e)
+      }
+    } else {
+      console.log('Already been scraped', url)
+    }
   }
 
   browsers.forEach(browser => browser.close());
-  return uniq(links.filter(item => item.includes('wrkid')));
 }
 
 async function getWordsFromSongPage(url: string) {
@@ -73,6 +101,9 @@ async function getWordsFromSongPage(url: string) {
 
   const words = flatten(song
     .replaceAll('?', '')
+    .replaceAll(',', '')
+    .replaceAll('.', '')
+    .replaceAll('"', '')
     .split(' ')
     .filter(word => !['', "\n"].includes(word))
     .map(word => word.split("\n")))
@@ -84,16 +115,20 @@ async function getWordsFromSongPage(url: string) {
 
 export async function scrape() {
   console.log('Start scraping songs');
-  const urls = await buildUniqueURLs();
+  // await buildUniqueURLs();
 
-  let words: string[] = [];
+  const songsPage = await prisma.songURL.findMany({
+    where: {scraped: false},
+    distinct: ['url'],
+  });
 
-  for await (let url of urls) {
-    const wordsFromSong = await getWordsFromSongPage(url);
-    words = [...words, ...wordsFromSong]
+  let scraped: number[] = [];
+
+  for await (let songPage of songsPage) {
+    const wordsFromSong = await getWordsFromSongPage(songPage.url);
+    await Promise.all(wordsFromSong.map(word => prisma.word.create({data: {word}})))
+    scraped.push(songPage.id);
   }
 
-  writeFile('./wordsSongs.js', JSON.stringify(uniq(words)), (error) => {
-    console.error(error);
-  })
+  await prisma.songURL.updateMany({data: {scraped: true}, where: {id: {in: scraped}}})
 }
