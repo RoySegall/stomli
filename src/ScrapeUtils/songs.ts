@@ -1,6 +1,7 @@
 import {openPuppeteerPage} from "./api";
-import {uniq} from "lodash";
+import {uniq, flatten} from "lodash";
 import {Browser, Page} from "puppeteer";
+import {writeFile} from "fs";
 
 const urls = [
   'https://shironet.mako.co.il/artist?type=works&lang=1&prfid=975',
@@ -45,7 +46,7 @@ async function scrapePage(page: Page, url: string, links: string[]): Promise<str
   return links;
 }
 
-async function buildUniquePages(): Promise<string[]> {
+async function buildUniqueURLs(): Promise<string[]> {
   let links = [''];
   let browsers: Browser[] = [];
 
@@ -61,24 +62,38 @@ async function buildUniquePages(): Promise<string[]> {
 }
 
 async function getWordsFromSongPage(url: string) {
+  console.log('Get words from ', url);
   const {page, browser} = await openPuppeteerPage(url);
   const selector = '.artist_lyrics_text';
   await page.waitForSelector(selector);
-
   const song = await page.evaluate((selector) => {
     const [span] = Array.from(document.querySelectorAll(selector));
-    return span.textContent.split('|')[0].trim();
+    return span.textContent.split('|')[0].trim() as string;
   }, selector);
 
-  const regex = /^[א-ת]{5}/gm;
+  const words = flatten(song
+    .replaceAll('?', '')
+    .split(' ')
+    .filter(word => !['', "\n"].includes(word))
+    .map(word => word.split("\n")))
+    .filter(word => word.length === 5);
 
-  console.log(regex.exec(song));
   await browser.close();
+  return words;
 }
 
 export async function scrape() {
   console.log('Start scraping songs');
-  // const pages = await buildUniquePages();
-  const pages = ['https://shironet.mako.co.il/artist?type=lyrics&lang=1&prfid=975&wrkid=21312'];
-  await getWordsFromSongPage(pages[0]);
+  const urls = await buildUniqueURLs();
+
+  let words: string[] = [];
+
+  for await (let url of urls) {
+    const wordsFromSong = await getWordsFromSongPage(url);
+    words = [...words, ...wordsFromSong]
+  }
+
+  writeFile('./wordsSongs.js', JSON.stringify(uniq(words)), (error) => {
+    console.error(error);
+  })
 }
