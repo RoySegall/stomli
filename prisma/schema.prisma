@@ -16,12 +16,12 @@ model SongsPage {
 
 model SongURL {
   id        Int     @id @default(autoincrement())
-  url       String
+  url       String  @unique
   scraped   Boolean
 }
 
 model Word {
   id    Int     @id @default(autoincrement())
-  word  String
+  word  String  @unique
 }
 

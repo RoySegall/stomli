@@ -10,7 +10,8 @@
     "scrape": "ts-node ./src/scrape.ts",
     "shuffle": "ts-node ./src/shuffle.ts",
     "test": "mocha",
-    "generate": "prisma generate"
+    "generate": "prisma generate",
+    "migrate": "prisma db push"
   },
   "dependencies": {
     "@prisma/client": "^3.11.0",

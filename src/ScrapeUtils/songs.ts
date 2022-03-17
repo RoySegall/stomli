@@ -1,7 +1,6 @@
 import {openPuppeteerPage} from "./api";
 import {uniq, flatten} from "lodash";
 import {Browser, Page} from "puppeteer";
-import {writeFile} from "fs";
 import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient();
@@ -39,17 +38,11 @@ async function scrapePage(page: Page, url: string) {
     });
   }, selector);
 
-  await Promise.all(
-    uniq(linksFromCurrentPage.filter(item => item.includes('wrkid')))
-    .map(async url => {
-      const results = await prisma.songURL.findFirst({where: {url}})
+  const validLinks = linksFromCurrentPage.filter(item => item.includes('wrkid'));
 
-      if (!results) {
-        await prisma.songURL.create({data: {url, scraped: false}})
-      }
-    })
-  );
-
+  for await (let validLink of validLinks) {
+    await prisma.songURL.upsert({where: {url: validLink}, create: {url: validLink, scraped: false}, update: {url: validLink}});
+  }
   console.log('Links collected ', url)
 
   const nextPage = await scrapeNextPages(page);
@@ -104,6 +97,8 @@ async function getWordsFromSongPage(url: string) {
     .replaceAll(',', '')
     .replaceAll('.', '')
     .replaceAll('"', '')
+    .replaceAll(':', '')
+    .replaceAll('!', '')
     .split(' ')
     .filter(word => !['', "\n"].includes(word))
     .map(word => word.split("\n")))
@@ -115,20 +110,20 @@ async function getWordsFromSongPage(url: string) {
 
 export async function scrape() {
   console.log('Start scraping songs');
-  // await buildUniqueURLs();
+  await buildUniqueURLs();
 
-  const songsPage = await prisma.songURL.findMany({
-    where: {scraped: false},
-    distinct: ['url'],
-  });
-
-  let scraped: number[] = [];
+  const songsPage = await prisma.songURL.findMany({where: {scraped: false}});
 
   for await (let songPage of songsPage) {
     const wordsFromSong = await getWordsFromSongPage(songPage.url);
-    await Promise.all(wordsFromSong.map(word => prisma.word.create({data: {word}})))
-    scraped.push(songPage.id);
+    for await (let word of wordsFromSong) {
+      await prisma.word.upsert({
+        where: {word},
+        create: {word},
+        update: {word}
+      });
+    }
+    await prisma.songURL.update({data: {scraped: true}, where: {id: songPage.id}})
   }
 
-  await prisma.songURL.updateMany({data: {scraped: true}, where: {id: {in: scraped}}})
 }
