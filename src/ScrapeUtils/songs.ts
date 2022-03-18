@@ -1,15 +1,18 @@
 import {openPuppeteerPage} from "./api";
-import {uniq, flatten} from "lodash";
+import {flatten} from "lodash";
 import {Browser, Page} from "puppeteer";
 import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient();
 
-const urls = [
-  'https://shironet.mako.co.il/artist?type=works&lang=1&prfid=975',
-  'https://shironet.mako.co.il/artist?type=works&lang=1&prfid=975&sort=alpha&class=1',
-  'https://shironet.mako.co.il/artist?type=works&lang=1&prfid=975&sort=alpha&class=2',
-];
+const artists = {
+  shlomo: 975,
+  hadagNachas: 333,
+  arikEinsein: 166,
+  shalom: 960,
+  avivGeffen: 34,
+  ehudBanai: 57,
+};
 
 async function scrapeNextPages(page: Page): Promise<string> {
   try {
@@ -54,7 +57,24 @@ async function scrapePage(page: Page, url: string) {
 async function buildUniqueURLs() {
   let browsers: Browser[] = [];
 
-  for await (let url of urls) {
+  const urls = flatten(Object.values(artists).map(id => {
+    return [
+      `https://shironet.mako.co.il/artist?type=works&lang=1&prfid=${id}`,
+      `https://shironet.mako.co.il/artist?type=works&lang=1&prfid=${id}&sort=alpha&class=1`,
+      `https://shironet.mako.co.il/artist?type=works&lang=1&prfid=${id}&sort=alpha&class=2`,
+    ];
+  }));
+
+  const scrapedUrlsEntries = await prisma.songsPage.findMany({where: {scraped: true}, select: {url: true}});
+  const scrapedUrls = scrapedUrlsEntries.map(({url}) => url);
+  const unScrapedUrls = urls.filter(url => !scrapedUrls.includes(url));
+
+  if (unScrapedUrls.length === 0) {
+    console.log('No need to scraped any more pages')
+    return;
+  }
+
+  for await (let url of unScrapedUrls) {
     const {page, browser} = await openPuppeteerPage(url);
     browsers.push(browser);
 
