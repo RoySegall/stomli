@@ -70,9 +70,11 @@ async function buildUniqueURLs() {
   const unScrapedUrls = urls.filter(url => !scrapedUrls.includes(url));
 
   if (unScrapedUrls.length === 0) {
-    console.log('No need to scraped any more pages')
+    console.log('No need to scraped any more artists')
     return;
   }
+
+  console.log(`Start scraping songs from ${unScrapedUrls.length} artists`);
 
   for await (let url of unScrapedUrls) {
     const {page, browser} = await openPuppeteerPage(url);
@@ -129,7 +131,6 @@ async function getWordsFromSongPage(url: string) {
 }
 
 export async function scrape() {
-  console.log('Start scraping songs');
   await buildUniqueURLs();
 
   const songsPage = await prisma.songURL.findMany({where: {scraped: false}});
