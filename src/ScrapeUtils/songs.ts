@@ -135,6 +135,8 @@ export async function scrape() {
 
   const songsPage = await prisma.songURL.findMany({where: {scraped: false}});
 
+  console.log(`Need to scrape ${songsPage.length} songs`)
+
   for await (let songPage of songsPage) {
     const wordsFromSong = await getWordsFromSongPage(songPage.url);
     for await (let word of wordsFromSong) {
