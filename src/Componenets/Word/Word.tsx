@@ -16,7 +16,7 @@ export function getColorClass(selectedWord: string, index: string, letter: strin
 
     // Second, check if the current word has the current letter. That's mean we already find the letter in the correct
     // place, but it should not be marked as wrong place.
-    return currentWord.includes(letter) ? 'wrong' : 'wrongPlace';
+    return currentWord.includes(letter) ? 'wrongPlace' : 'wrong';
   }
 
   return 'wrong';
