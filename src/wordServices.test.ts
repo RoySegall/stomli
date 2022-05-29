@@ -4,10 +4,8 @@ import {
   getNextWord,
   getDictionaryByYear,
   getDayInYear,
-  getAllWords
 } from './wordsService';
 
-import * as wordsService from './wordsService'
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 describe('Words service', function () {
@@ -20,7 +18,7 @@ describe('Words service', function () {
 
     it('should fail for words with less than 5 letters', () => {expect(checkIfWordIsValid('אמא')).toBeFalsy()});
     it('should fail for words with more than 5 letters', () => {expect(checkIfWordIsValid('אהבתיה')).toBeFalsy()});
-    it.only('should failed for valid words which not in any dictionary', () => {expect(checkIfWordIsValid('תרכוס')).toBeFalsy()});
+    it('should failed for valid words which not in any dictionary', () => {expect(checkIfWordIsValid('אבגדה')).toBeFalsy()});
     it('should pass for valid words which in the first dictionary', () => {expect(checkIfWordIsValid('בעירה')).toBeTruthy()});
     it('should pass for valid words which in the second dictionary', () => {expect(checkIfWordIsValid('החמצה')).toBeTruthy()});
     it('should pass for valid words which not in the third dictionary', () => {expect(checkIfWordIsValid('אהובי')).toBeTruthy()});
