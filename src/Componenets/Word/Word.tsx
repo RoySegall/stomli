@@ -8,6 +8,14 @@ interface WordProps {
 }
 
 export function getColorClass(selectedWord: string, index: string, letter: string, currentWord: string) {
+  const finals = [
+    ['ם', 'מ'],
+    ['ץ', 'צ'],
+    ['ך', 'כ'],
+    ['ף', 'פ'],
+    ['ן', 'נ'],
+  ]
+
   if (selectedWord.includes(letter)) {
     // First, check if this is the correct place of the letter.
     if (selectedWord.charAt(parseInt(index)) === letter) {
@@ -19,7 +27,20 @@ export function getColorClass(selectedWord: string, index: string, letter: strin
     return currentWord.includes(letter) ? 'wrongPlace' : 'wrong';
   }
 
-  return 'wrong';
+  const firstValue = 'wrong';
+  return finals.reduce((previousValue, [lastLetterRepresentation, nonLastLetterRepresentation]) => {
+
+
+    if ([nonLastLetterRepresentation, lastLetterRepresentation].some((letter) => selectedWord.includes(letter))) {
+      // The letter is an end-letter or letter that exists in the selected word.
+      if ([lastLetterRepresentation, nonLastLetterRepresentation].includes(letter)) {
+        // The letter exists but in the worng location.
+        return 'wrongPlace';
+      }
+    }
+
+    return previousValue;
+  }, firstValue)
 }
 
 const Word = ({selectedWord, currentWord, currentChance, optionalChance}: WordProps) => {
