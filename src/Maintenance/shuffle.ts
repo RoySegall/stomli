@@ -1,4 +1,4 @@
-import { words } from './words';
+import { words } from '../words';
 import {shuffle, chunk, sample} from 'lodash'
 import {writeFile} from "fs";
 

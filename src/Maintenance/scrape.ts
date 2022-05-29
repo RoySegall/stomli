@@ -1,4 +1,4 @@
-import {wikiDictionaryScrape, songsScrape} from './ScrapeUtils';
+import {wikiDictionaryScrape, songsScrape} from '../ScrapeUtils';
 
 (async () => {
   await Promise.all([

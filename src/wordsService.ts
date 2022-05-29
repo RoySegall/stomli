@@ -1,11 +1,12 @@
 import {shuffledWords} from "./shuffle-words";
+import {words as wordsFromDB} from './wordsFromDB';
 import {filter, shuffle} from 'lodash';
 
 type YearTypes = 'firstYear' | 'secondYear' | 'thirdYear' | 'leapYear';
 
 export function getAllWords(): string[] {
   const {leapYear, secondYear, thirdYear, firstYear} = shuffledWords;
-  return [...leapYear, ...secondYear, ...thirdYear, ...firstYear]
+  return [...leapYear, ...secondYear, ...thirdYear, ...firstYear, ...wordsFromDB];
 }
 
 export function getDayInYear(year: number, month= 0, day = 1): number {
