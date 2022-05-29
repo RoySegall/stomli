@@ -9,7 +9,7 @@
     "deploy": "gh-pages -d dist",
     "scrape": "ts-node ./src/Maintenance/scrape.ts",
     "shuffle": "ts-node ./src/Maintenance/shuffle.ts",
-    "test": "mocha",
+    "test": "vitest run",
     "generate": "prisma generate",
     "migrate": "prisma db push",
     "exportsWordFromDb": "ts-node ./src/Maintenance/exportsWordsFromDb.ts"
@@ -37,6 +37,7 @@
     "prisma": "^3.11.0",
     "ts-node": "^10.6.0",
     "typescript": "^4.6.2",
-    "vite": "^2.8.0"
+    "vite": "^2.8.0",
+    "vitest": "^0.12.9"
   }
 }

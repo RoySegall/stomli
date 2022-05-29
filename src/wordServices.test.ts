@@ -1,43 +1,56 @@
-import {checkIfWordIsValid, getTodayWord, getNextWord, getDictionaryByYear, getDayInYear} from './wordsService';
-import {equal, ok} from 'assert';
+import {
+  checkIfWordIsValid,
+  getTodayWord,
+  getNextWord,
+  getDictionaryByYear,
+  getDayInYear,
+  getAllWords
+} from './wordsService';
+
+import * as wordsService from './wordsService'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 
 describe('Words service', function () {
   const getDateByYear = (year: number, month = 0, day = 1) => new Date(year, month, day, 0, 0, 0);
 
   describe('checkIfWordIsValid', () => {
-    it('should fail for words with less than 5 letters', () => {equal(checkIfWordIsValid('אמא'), false)});
-    it('should fail for words with more than 5 letters', () => {equal(checkIfWordIsValid('אהבתיה'), false)});
-    it('should failed for valid words which not in any dictionary', () => {equal(checkIfWordIsValid('סוכרת'), false)});
-    it('should pass for valid words which in the first dictionary', () => {ok(checkIfWordIsValid('בעירה'))});
-    it('should pass for valid words which in the second dictionary', () => {ok(checkIfWordIsValid('החמצה'))});
-    it('should pass for valid words which not in the third dictionary', () => {ok(checkIfWordIsValid('אהובי'))});
-    it('should pass for valid words which not in the leap year dictionary', () => {ok(checkIfWordIsValid('מסעדה'))});
+    beforeEach(() => {
+      vi.restoreAllMocks();
+    })
+
+    it('should fail for words with less than 5 letters', () => {expect(checkIfWordIsValid('אמא')).toBeFalsy()});
+    it('should fail for words with more than 5 letters', () => {expect(checkIfWordIsValid('אהבתיה')).toBeFalsy()});
+    it.only('should failed for valid words which not in any dictionary', () => {expect(checkIfWordIsValid('תרכוס')).toBeFalsy()});
+    it('should pass for valid words which in the first dictionary', () => {expect(checkIfWordIsValid('בעירה')).toBeTruthy()});
+    it('should pass for valid words which in the second dictionary', () => {expect(checkIfWordIsValid('החמצה')).toBeTruthy()});
+    it('should pass for valid words which not in the third dictionary', () => {expect(checkIfWordIsValid('אהובי')).toBeTruthy()});
+    it('should pass for valid words which not in the leap year dictionary', () => {expect(checkIfWordIsValid('מסעדה')).toBeTruthy()});
   });
 
   describe('getDictionaryByYear', () => {
     it('should return leapYear for a leap year', () => {
-      equal(getDictionaryByYear(getDateByYear(2000)), 'leapYear');
-      equal(getDictionaryByYear(getDateByYear(2004)), 'leapYear');
-      equal(getDictionaryByYear(getDateByYear(2008)), 'leapYear');
-      equal(getDictionaryByYear(getDateByYear(2012)), 'leapYear');
+      expect(getDictionaryByYear(getDateByYear(2000))).toBe( 'leapYear');
+      expect(getDictionaryByYear(getDateByYear(2004))).toBe( 'leapYear');
+      expect(getDictionaryByYear(getDateByYear(2008))).toBe( 'leapYear');
+      expect(getDictionaryByYear(getDateByYear(2012))).toBe( 'leapYear');
     });
     it('should return firstYear for the first year after the leap year', () => {
-      equal(getDictionaryByYear(getDateByYear(2001)), 'firstYear');
-      equal(getDictionaryByYear(getDateByYear(2005)), 'firstYear');
-      equal(getDictionaryByYear(getDateByYear(2009)), 'firstYear');
-      equal(getDictionaryByYear(getDateByYear(2013)), 'firstYear');
+      expect(getDictionaryByYear(getDateByYear(2001))).toBe( 'firstYear');
+      expect(getDictionaryByYear(getDateByYear(2005))).toBe( 'firstYear');
+      expect(getDictionaryByYear(getDateByYear(2009))).toBe( 'firstYear');
+      expect(getDictionaryByYear(getDateByYear(2013))).toBe( 'firstYear');
     });
     it('should return secondYear for the second year after the leap year', () => {
-      equal(getDictionaryByYear(getDateByYear(2002)), 'secondYear');
-      equal(getDictionaryByYear(getDateByYear(2006)), 'secondYear');
-      equal(getDictionaryByYear(getDateByYear(2010)), 'secondYear');
-      equal(getDictionaryByYear(getDateByYear(2014)), 'secondYear');
+      expect(getDictionaryByYear(getDateByYear(2002))).toBe( 'secondYear');
+      expect(getDictionaryByYear(getDateByYear(2006))).toBe( 'secondYear');
+      expect(getDictionaryByYear(getDateByYear(2010))).toBe( 'secondYear');
+      expect(getDictionaryByYear(getDateByYear(2014))).toBe( 'secondYear');
     });
     it('should return thirdYear for the third year after the leap year', () => {
-      equal(getDictionaryByYear(getDateByYear(2003)), 'thirdYear');
-      equal(getDictionaryByYear(getDateByYear(2007)), 'thirdYear');
-      equal(getDictionaryByYear(getDateByYear(2011)), 'thirdYear');
-      equal(getDictionaryByYear(getDateByYear(2015)), 'thirdYear');
+      expect(getDictionaryByYear(getDateByYear(2003))).toBe( 'thirdYear');
+      expect(getDictionaryByYear(getDateByYear(2007))).toBe( 'thirdYear');
+      expect(getDictionaryByYear(getDateByYear(2011))).toBe( 'thirdYear');
+      expect(getDictionaryByYear(getDateByYear(2015))).toBe( 'thirdYear');
     });
   });
 
@@ -50,7 +63,7 @@ describe('Words service', function () {
         const monthAsDate = parseInt(month) - 1;
 
         for (let i = 1; i <= maxDays; i++) {
-          equal(getDayInYear(2022, monthAsDate, i), it);
+          expect(getDayInYear(2022, monthAsDate, i)).toBe(it);
           it++;
         }
       });
@@ -59,19 +72,19 @@ describe('Words service', function () {
 
   describe('getTodayWord', () => {
     it('should return ? for 01/01 for the first year', () => {
-      equal(getTodayWord(getDateByYear(2001)), 'בעירה');
+      expect(getTodayWord(getDateByYear(2001))).toBe( 'בעירה');
     });
     it('should return ? for 01/01 for the second year', () => {
-      equal(getTodayWord(getDateByYear(2002)), 'החמצה');
+      expect(getTodayWord(getDateByYear(2002))).toBe( 'החמצה');
     });
     it('should return ? for 01/01 for the third year', () => {
-      equal(getTodayWord(getDateByYear(2003)), 'אהובי');
+      expect(getTodayWord(getDateByYear(2003))).toBe( 'אהובי');
     });
     it('should return ? for 01/01 for the leap year', () => {
-      equal(getTodayWord(getDateByYear(2000)), 'מסעדה');
+      expect(getTodayWord(getDateByYear(2000))).toBe( 'מסעדה');
     });
     it('should return ? for 29/02 for the leap year', () => {
-      equal(getTodayWord(getDateByYear(2000, 1, 29)), 'גרגרן');
+      expect(getTodayWord(getDateByYear(2000, 1, 29))).toBe('גרגרן');
     });
   });
 
